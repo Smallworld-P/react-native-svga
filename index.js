@@ -6,9 +6,9 @@ import {
     Platform 
 } from 'react-native';
 
-const NativeSVGAPlayer = requireNativeComponent('RNSVGA', RNSVGPlayer)
+const NativeSVGAView = requireNativeComponent('RNSVGA', SvgaView)
 
-export default class RNSVGPlayer extends Component {
+export default class SvgaView extends Component {
 
     constructor(props) {
         super(props)
@@ -124,7 +124,7 @@ export default class RNSVGPlayer extends Component {
         }
 
         return (
-            <NativeSVGAPlayer {...this.props} {...this.state} {...eventListeners}/>
+            <NativeSVGAView {...this.props} {...this.state} {...eventListeners}/>
         )
     }
 }

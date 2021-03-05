@@ -1,19 +1,19 @@
 import React from 'react';
 import { ViewProps } from 'react-native';
-interface SVGAPlayerProps extends ViewProps {
+interface IP extends ViewProps {
     onFinished?: () => void;
     onFrame?: (value: number) => void;
     onPercentage?: (value: number) => void;
     source: string;
 }
-interface SVGAPlayerState {
+interface IS {
     source: string;
     toFrame: number;
     currentState: string;
     toPercentage: number;
 }
-export default class SVGAPlayer extends React.Component<SVGAPlayerProps, SVGAPlayerState> {
-    constructor(props: Readonly<SVGAPlayerProps>);
+export default class SvgaView extends React.Component<IP, IS> {
+    constructor(props: Readonly<IP>);
     load(source: string): void;
     startAnimation(): void;
     pauseAnimation(): void;
