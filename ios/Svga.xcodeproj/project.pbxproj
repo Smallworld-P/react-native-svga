@@ -6,6 +6,10 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F5C6919925F20CB500E14F1B /* SVGAPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C6919825F20CB500E14F1B /* SVGAPlayerManager.m */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,6 +24,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libSvga.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSvga.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5C6919725F20CB500E14F1B /* SVGAPlayerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVGAPlayerManager.h; sourceTree = "<group>"; };
+		F5C6919825F20CB500E14F1B /* SVGAPlayerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVGAPlayerManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,8 +50,18 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				F5C6919625F20C9000E14F1B /* React */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		F5C6919625F20C9000E14F1B /* React */ = {
+			isa = PBXGroup;
+			children = (
+				F5C6919725F20CB500E14F1B /* SVGAPlayerManager.h */,
+				F5C6919825F20CB500E14F1B /* SVGAPlayerManager.m */,
+			);
+			path = React;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -105,6 +121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5C6919925F20CB500E14F1B /* SVGAPlayerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
