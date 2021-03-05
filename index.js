@@ -8,7 +8,7 @@ import {
 
 const NativeSVGAPlayer = requireNativeComponent('RNSVGPlayer', RNSVGPlayer)
 
-class RNSVGPlayer extends Component {
+export default class RNSVGPlayer extends Component {
 
     constructor(props) {
         super(props)
@@ -78,7 +78,15 @@ class RNSVGPlayer extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.stopAnimation();
+    }
+
     render() {
+        if (!this.props.source) {
+            return null;
+        }
+
         let eventListeners = {};
         if (Platform.OS === "android") {
             eventListeners.onChange = (event) => {
@@ -120,5 +128,3 @@ class RNSVGPlayer extends Component {
         )
     }
 }
-
-module.exports = RNSVGPlayer;
