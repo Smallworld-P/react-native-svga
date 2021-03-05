@@ -6,7 +6,7 @@ import {
     Platform 
 } from 'react-native';
 
-const NativeSVGAPlayer = requireNativeComponent('RNSVGPlayer', RNSVGPlayer)
+const NativeSVGAPlayer = requireNativeComponent('RNSVGA', RNSVGPlayer)
 
 export default class RNSVGPlayer extends Component {
 

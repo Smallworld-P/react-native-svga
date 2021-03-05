@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class SvgaManager extends SimpleViewManager<RCTSVGAImageView> {
 
-    public static final String REACT_CLASS = "RNSvgaPlayer";
+    public static final String REACT_CLASS = "RNSVGA";
 
     @Override
     public String getName() {
