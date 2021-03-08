@@ -3,12 +3,13 @@
 import React, { Component } from 'react'
 import { 
     requireNativeComponent, 
+    NativeModules,
     Platform 
 } from 'react-native';
 
-const NativeSVGAView = requireNativeComponent('RNSVGA', SvgaView)
-
-export default class SvgaView extends Component {
+const NativeSVGAView = requireNativeComponent('RNSVGA', SVGAView)
+export const SVGAModule = NativeModules.SvgaMoudle
+export class SVGAView extends Component {
 
     constructor(props) {
         super(props)

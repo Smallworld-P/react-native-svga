@@ -12,7 +12,7 @@ interface IS {
     currentState: string;
     toPercentage: number;
 }
-export default class SvgaView extends React.Component<IP, IS> {
+export class SVGAView extends React.Component<IP, IS> {
     constructor(props: Readonly<IP>);
     load(source: string): void;
     startAnimation(): void;
@@ -23,4 +23,9 @@ export default class SvgaView extends React.Component<IP, IS> {
     componentWillUnmount(): void;
     render(): JSX.Element | null;
 }
-export {};
+
+export class SVGAModule {
+    // static isCached(url: String, callback: any): void
+    static isCached(url: String): Promise<Boolean>
+    static advanceDownload(urls: Array<String>): void
+}

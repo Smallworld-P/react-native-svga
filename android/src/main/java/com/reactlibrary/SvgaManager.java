@@ -1,6 +1,7 @@
 package com.reactlibrary;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -8,6 +9,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
+import java.io.File;
 import java.net.URL;
 
 public class SvgaManager extends SimpleViewManager<RCTSVGAImageView> {
@@ -21,6 +23,8 @@ public class SvgaManager extends SimpleViewManager<RCTSVGAImageView> {
 
     @Override
     public RCTSVGAImageView createViewInstance(ThemedReactContext c) {
+        Log.d("TAG", "createViewInstance: 初始化RCTSVGAImageView");
+//        File cacheDir = new File(, "http");
         return new RCTSVGAImageView(c, null, 0);
     }
 
