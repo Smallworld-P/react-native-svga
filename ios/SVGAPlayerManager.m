@@ -162,7 +162,7 @@ static int kReactOnPercentageIdentifier;
 
 @implementation SVGAPlayerManager
 
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(RNSVGAManager)
 RCT_EXPORT_VIEW_PROPERTY(loops, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(clearsAfterStop, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(source, NSString)
