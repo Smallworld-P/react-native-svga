@@ -114,6 +114,8 @@ static int kReactOnPercentageIdentifier;
     return objc_getAssociatedObject(self, &kReactOnPercentageIdentifier);
 }
 
+/// 设置动画到某帧
+/// @param toFrame 帧值
 - (void)setToFrame:(NSInteger)toFrame {
     if (toFrame < 0) {
         return;
@@ -121,10 +123,13 @@ static int kReactOnPercentageIdentifier;
     [self stepToFrame:toFrame andPlay:[self.currentState isEqualToString:@"play"]];
 }
 
+/// 设置动画帧的初始值
 - (NSInteger)toFrame {
     return 0;
 }
 
+/// 设置动画进度
+/// @param toPercentage 进度值
 - (void)setToPercentage:(NSInteger)toPercentage {
     if (toPercentage < 0) {
         return;
@@ -132,22 +137,32 @@ static int kReactOnPercentageIdentifier;
     [self stepToPercentage:toPercentage andPlay:[self.currentState isEqualToString:@"play"]];
 }
 
+/// 设置动画进度初始值
 - (NSInteger)toPercentage {
     return 0.0;
 }
 
+
+#pragma mark - SVGAPlayerDelegate
+
+/// 动画播放完成
+/// @param player player
 - (void)svgaPlayerDidFinishedAnimation:(SVGAPlayer *)player {
     if (self.onFinished) {
         self.onFinished(@{});
     }
 }
 
+/// 控制当前动画停靠在某帧，如果 currentState 值为 ‘play’，则跳到该帧后继续播放动画
+/// @param frame 某帧
 - (void)svgaPlayerDidAnimatedToFrame:(NSInteger)frame {
     if (self.onFrame) {
         self.onFrame(@{ @"value" : @(frame) });
     }
 }
 
+/// 控制当前动画停靠在某进度，如果 currentState 值为 ‘play’，则跳到该帧后继续播放动画
+/// @param percentage 某进度
 - (void)svgaPlayerDidAnimatedToPercentage:(CGFloat)percentage {
     if (self.onPercentage) {
         self.onPercentage(@{ @"value" : @(percentage) });
@@ -162,17 +177,32 @@ static int kReactOnPercentageIdentifier;
 
 @implementation SVGAPlayerManager
 
+
 RCT_EXPORT_MODULE(RNSVGAManager)
+/// 默认值为 0，用于指定动画循环次数，0 = 无限循环
 RCT_EXPORT_VIEW_PROPERTY(loops, NSInteger)
+/// 默认值为 true，动画播放完成后，是否清空画布
 RCT_EXPORT_VIEW_PROPERTY(clearsAfterStop, BOOL)
+/// SVGA 动画文件的路径，可以是 URL，或是本地 NSBundle.mainBundle / assets 文件
 RCT_EXPORT_VIEW_PROPERTY(source, NSString)
+/// 用于控制 SVGA 播放状态，可设定以下值
+/// ‘start’ = 从头开始播放;
+/// ‘pause’ = 从当前位置暂停播放;
+/// ‘stop’ = ‘停止播放’;
+/// ‘clear’ = ‘停止播放并清空画布
 RCT_EXPORT_VIEW_PROPERTY(currentState, NSString)
+/// 控制当前动画停靠在某帧，如果 currentState 值为 ‘play’，则跳到该帧后继续播放动画
 RCT_EXPORT_VIEW_PROPERTY(toFrame, NSInteger)
+/// 控制当前动画停靠在某进度，如果 currentState 值为 ‘play’，则跳到该帧后继续播放动画
 RCT_EXPORT_VIEW_PROPERTY(toPercentage, NSInteger)
+/// 动画播放完成后，回调
 RCT_EXPORT_VIEW_PROPERTY(onFinished, RCTBubblingEventBlock)
+/// 动画播放至某帧时，回调
 RCT_EXPORT_VIEW_PROPERTY(onFrame, RCTBubblingEventBlock)
+/// 动画播放至某进度时，回调
 RCT_EXPORT_VIEW_PROPERTY(onPercentage, RCTBubblingEventBlock)
 
+/// 初始化视图
 - (UIView *)view {
     SVGAPlayer *aPlayer = [[SVGAPlayer alloc] init];
     aPlayer.delegate = aPlayer;
