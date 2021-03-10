@@ -122,6 +122,12 @@ export class SVGAView extends Component {
                     this.props.onPercentage(event.nativeEvent.value);
                 }
             }
+            if (typeof this.props.onFinished === "function") {
+                eventListeners.onFinished = (event) => {
+                    console.log('onFinished=====');
+                    this.props.onFinished();
+                }
+            }
         }
 
         return (
