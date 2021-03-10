@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 
 const NativeSVGAView = requireNativeComponent('RNSVGA', SVGAView)
-export const SVGAModule = NativeModules.SvgaMoudle
+
+export const SVGAModule = NativeModules.SvgaMoudle || NativeModules.RNSVGAManager
 export class SVGAView extends Component {
 
     constructor(props) {
