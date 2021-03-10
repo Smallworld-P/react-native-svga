@@ -13,7 +13,7 @@ import com.opensource.svgaplayer.utils.log.SVGALogger
 import java.io.File
 import java.net.URL
 
-class SvgaModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
     private val reactContext: ReactApplicationContext = reactContext
     override fun getName(): String {
         return "RCTSvgaMoudle"

@@ -7,7 +7,7 @@ import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import java.net.URL
 
-class SvgaManager : SimpleViewManager<RCTSVGAImageView>() {
+class RCTSVGAManager : SimpleViewManager<RCTSVGAImageView>() {
     override fun getName(): String {
         return REACT_CLASS
     }

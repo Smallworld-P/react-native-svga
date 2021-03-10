@@ -42,8 +42,9 @@ export class SVGAView extends Component {
 
     /** 停止动画 */
     stopAnimation() {
+        console.log("停止动画");
         this.setState({
-            currentState: "stop",
+            currentState: "clear",
         });
     }
 
@@ -91,6 +92,7 @@ export class SVGAView extends Component {
         let eventListeners = {};
         if (Platform.OS === "android") {
             eventListeners.onChange = (event) => {
+                console.log("---- eventListeners.onChange --- " + event);
                 const { action } = event.nativeEvent;
                 if (action === "onFinished") {
                     if (typeof this.props.onFinished === "function") {
