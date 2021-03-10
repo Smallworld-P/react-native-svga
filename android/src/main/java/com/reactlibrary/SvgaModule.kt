@@ -6,51 +6,80 @@ import com.facebook.react.bridge.*
 import com.opensource.svgaplayer.SVGACache
 import com.opensource.svgaplayer.SVGACache.isCached
 import com.opensource.svgaplayer.SVGACache.onCreate
+import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAParser.Companion.shareParser
+import com.opensource.svgaplayer.SVGAVideoEntity
+import com.opensource.svgaplayer.utils.log.SVGALogger
 import java.io.File
-import java.io.IOException
-import java.net.MalformedURLException
 import java.net.URL
-import java.util.ArrayList
 
 class SvgaModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
-    private val reactContext: ReactApplicationContext
+    private val reactContext: ReactApplicationContext = reactContext
     override fun getName(): String {
         return "RCTSvgaMoudle"
     }
 
-    @ReactMethod
-    fun sampleMethod(stringArgument: String, numberArgument: Int, callback: Callback) {
-        // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: $numberArgument stringArgument: $stringArgument")
-    }
-
+    /**
+     * 是否已下载
+     */
     @ReactMethod
     fun isCached(url: String, promise: Promise) {
-        val res = isCached(url)
-        Log.d("TAG", "isCached = $res $url")
+        val cacheKey = SVGACache.buildCacheKey(url);
+        val res = isCached(cacheKey)
         promise.resolve(res)
     }
 
+    /**
+     * 预下载
+     */
     @ReactMethod
     fun advanceDownload(urls: ReadableArray?) {
-        Log.d("TAG", "advanceDownload1: " + urls?.size())
         if (urls != null && urls.size() > 0) {
+            var index = 0
+            var pause = false
+            val lock = java.lang.Object()
             val svgaParser = shareParser()
-            svgaParser.decodeFromURL(URL(urls.getString(0)), null)
-//            val list = urls.toArrayList()
-//            for (i in list) {
-//                println("i = ${i.toString()}")
-//                svgaParser.decodeFromURL(URL(i.toString()), null)
-//            }
+            val list = urls.toArrayList()
+
+            Thread(Runnable {
+                for (i in list) {
+                    index++
+                    while (pause) {
+                        synchronized(lock) {
+                            lock.wait()
+                        }
+                    }
+                    println("缓存中 - 当前第 $index 个, 共 ${urls.size()} 个, 地址 : $i")
+                    pause = true
+                    svgaParser.decodeFromURL(URL(i.toString()), object : SVGAParser.ParseCompletion {
+                        override fun onComplete(videoItem: SVGAVideoEntity) {
+                            println("第 $index 个 $i 缓存成功")
+                            pause = false
+                            synchronized (lock) {
+                                lock.notifyAll();
+                            }
+                        }
+
+                        override fun onError() {
+                            println("第 $index 个 $i 缓存失败,请检查地址是否正确")
+                            pause = false
+                            synchronized (lock) {
+                                lock.notifyAll();
+                            }
+                        }
+                    })
+                }
+            }).start()
+
         }
+
     }
 
     init {
-        // 设置缓存
         val cacheDir = File(reactContext.cacheDir, "http")
         HttpResponseCache.install(cacheDir, 1024 * 1024 * 128)
         onCreate(reactContext, SVGACache.Type.FILE)
-        this.reactContext = reactContext
+        shareParser().init(reactContext)
+        SVGALogger.setLogEnabled(true)
     }
 }
