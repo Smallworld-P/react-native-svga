@@ -14,18 +14,33 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bugs": {
+    "url": "https://github.com/Smallworld-P/react-native-svga/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-svga.git",
-    "baseUrl": "https://github.com/github_account/react-native-svga"
+    "url": "git+https://github.com/Smallworld-P/react-native-svga.git",
+    "baseUrl": "https://github.com/Smallworld-P/react-native-svga"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "svga"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "xsj",
+    "email": "1045252343@qq.com"
   },
+  "contributors": [
+    {
+      "name": "san_mu",
+      "email": "jedshim@163.com"
+    },
+    {
+      "name": "yuanaxun",
+      "email": "yuanaxun@hotmail.com"
+    }
+  ],
+
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
