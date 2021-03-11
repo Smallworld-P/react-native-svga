@@ -211,7 +211,7 @@ RCT_EXPORT_METHOD(advanceDownload:(NSArray *)cacheUrls) {
         return;
     }
     cacheQueue = [NSOperationQueue new];
-    cacheQueue.maxConcurrentOperationCount = 1;
+    cacheQueue.maxConcurrentOperationCount = 2;
     [cacheQueue addOperationWithBlock:^{
         for (NSString *source in cacheUrls) {
             SVGAParser *parser = [[SVGAParser alloc] init];
