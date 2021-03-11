@@ -207,6 +207,9 @@ RCT_EXPORT_VIEW_PROPERTY(onPercentage, RCTBubblingEventBlock)
 /// 预加载缓存
 /// @param cacheUrls 缓存的数据
 RCT_EXPORT_METHOD(advanceDownload:(NSArray *)cacheUrls) {
+    if (cacheUrls.count <= 0) {
+        return;
+    }
     cacheQueue = [NSOperationQueue new];
     cacheQueue.maxConcurrentOperationCount = 1;
     [cacheQueue addOperationWithBlock:^{

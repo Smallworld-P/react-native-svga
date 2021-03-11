@@ -11,12 +11,14 @@ import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 const NativeSVGAView = requireNativeComponent('RNSVGA', SVGAView)
 
 const _Module = NativeModules.SvgaMoudle || NativeModules.RNSVGAManager
-
 export class SVGAModule {
+
+    // 动态获取本地资源
     static getAssets(nodeRequire) {
         return resolveAssetSource(nodeRequire).uri
     }
 
+    // 判断是否有缓存
     static isCached(url) {
         if (Platform.OS == 'android') {
             return _Module.isCached(url)
@@ -25,12 +27,9 @@ export class SVGAModule {
         }
     }
 
+    // 预加载
     static advanceDownload(urls) {
-        if (Platform.OS == 'android') {
-            _Module.advanceDownload(urls)
-        } else {
-            _Module.advanceDownload(urls)
-        }
+        _Module.advanceDownload(urls)
     }
 }
 export class SVGAView extends Component {
