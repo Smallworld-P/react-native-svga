@@ -9,7 +9,23 @@ import {
 
 const NativeSVGAView = requireNativeComponent('RNSVGA', SVGAView)
 
-export const SVGAModule = NativeModules.SvgaMoudle || NativeModules.RNSVGAManager
+const _Module = NativeModules.SvgaMoudle || NativeModules.RNSVGAManager
+
+export class SVGAModule {
+    static isCached(url) {
+        if (Platform.OS == 'android') {
+            return _Module.isCached(url)
+        } else {
+            return Promise.resolve(true)
+        }
+    }
+
+    static advanceDownload(urls) {
+        if (Platform.OS == 'android') {
+            _Module.advanceDownload(urls)
+        }
+    }
+}
 export class SVGAView extends Component {
 
     constructor(props) {
