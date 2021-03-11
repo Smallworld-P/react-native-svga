@@ -28,6 +28,8 @@ export class SVGAModule {
     static advanceDownload(urls) {
         if (Platform.OS == 'android') {
             _Module.advanceDownload(urls)
+        } else {
+            _Module.advanceDownload(urls)
         }
     }
 }

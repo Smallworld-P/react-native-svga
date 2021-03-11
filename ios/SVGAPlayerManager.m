@@ -10,6 +10,7 @@
 #import "SVGAPlayer.h"
 #import "SVGAParser.h"
 #import <objc/runtime.h>
+#import <React/RCTBridge.h>
 
 @interface SVGAPlayer (React)<SVGAPlayerDelegate>
 
@@ -143,6 +144,7 @@ static int kReactOnPercentageIdentifier;
 }
 
 
+
 #pragma mark - SVGAPlayerDelegate
 
 /// 动画播放完成
@@ -177,6 +179,7 @@ static int kReactOnPercentageIdentifier;
 
 @implementation SVGAPlayerManager
 
+static NSOperationQueue *cacheQueue;
 
 RCT_EXPORT_MODULE(RNSVGAManager)
 /// 默认值为 0，用于指定动画循环次数，0 = 无限循环
@@ -201,6 +204,34 @@ RCT_EXPORT_VIEW_PROPERTY(onFinished, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onFrame, RCTBubblingEventBlock)
 /// 动画播放至某进度时，回调
 RCT_EXPORT_VIEW_PROPERTY(onPercentage, RCTBubblingEventBlock)
+/// 预加载缓存
+/// @param cacheUrls 缓存的数据
+RCT_EXPORT_METHOD(advanceDownload:(NSArray *)cacheUrls) {
+    cacheQueue = [NSOperationQueue new];
+    cacheQueue.maxConcurrentOperationCount = 1;
+    [cacheQueue addOperationWithBlock:^{
+        for (NSString *source in cacheUrls) {
+            SVGAParser *parser = [[SVGAParser alloc] init];
+            if ([source hasPrefix:@"http"] || [source hasPrefix:@"https"]) {
+                [parser parseWithURL:[NSURL URLWithString:source]
+                     completionBlock:^(SVGAVideoEntity *_Nullable videoItem) {
+                        NSLog(@"预加载完成");
+                     }
+                        failureBlock:nil];
+            } else {
+                NSString *localPath = [[NSBundle mainBundle] pathForResource:source ofType:@"svga"];
+                if (localPath != nil) {
+                    [parser parseWithData:[NSData dataWithContentsOfFile:localPath]
+                                 cacheKey:source
+                          completionBlock:^(SVGAVideoEntity *_Nonnull videoItem) {
+                            NSLog(@"预加载完成");
+                          }
+                             failureBlock:nil];
+                }
+            }
+        }
+    }];
+}
 
 /// 初始化视图
 - (UIView *)view {
