@@ -40,6 +40,8 @@ export class SVGAView extends React.Component<ISvgaProps, IS> {
     pauseAnimation(): void
     /// 停止动画
     stopAnimation(): void
+    /// 清空动画
+    clearAnimation(): void
     /// 渲染特定的帧，如果andPlay设置为true，则从该帧开始播放
     stepToFrame(toFrame: any, andPlay: boolean): void
     /// 渲染特定百分比的帧，如果将percentage值设置为andPlaytrue，则该值应从0.0to到1.0该帧播放

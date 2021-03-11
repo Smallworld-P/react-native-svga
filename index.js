@@ -1,10 +1,10 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { 
-    requireNativeComponent, 
+import {
+    requireNativeComponent,
     NativeModules,
-    Platform 
+    Platform
 } from 'react-native';
 
 const NativeSVGAView = requireNativeComponent('RNSVGA', SVGAView)
@@ -43,7 +43,13 @@ export class SVGAView extends Component {
 
     /** 停止动画 */
     stopAnimation() {
-        console.log("停止动画");
+        this.setState({
+            currentState: "stop",
+        });
+    }
+
+    /** 停止动画 */
+    clearAnimation() {
         this.setState({
             currentState: "clear",
         });
@@ -93,7 +99,6 @@ export class SVGAView extends Component {
         let eventListeners = {};
         if (Platform.OS === "android") {
             eventListeners.onChange = (event) => {
-                console.log("---- eventListeners.onChange --- " + event);
                 const { action } = event.nativeEvent;
                 if (action === "onFinished") {
                     if (typeof this.props.onFinished === "function") {
@@ -115,26 +120,27 @@ export class SVGAView extends Component {
         else if (Platform.OS === "ios") {
             if (typeof this.props.onFrame === "function") {
                 eventListeners.onFrame = (event) => {
-                    console.log(event);
                     this.props.onFrame(event.nativeEvent.value);
                 }
             }
             if (typeof this.props.onPercentage === "function") {
                 eventListeners.onPercentage = (event) => {
-                    console.log(event);
                     this.props.onPercentage(event.nativeEvent.value);
                 }
             }
             if (typeof this.props.onFinished === "function") {
                 eventListeners.onFinished = (event) => {
-                    console.log('onFinished=====');
                     this.props.onFinished();
                 }
             }
         }
 
         return (
-            <NativeSVGAView {...this.props} {...this.state} {...eventListeners}/>
+            <NativeSVGAView
+                {...this.props}
+                {...this.state}
+                {...eventListeners}
+            />
         )
     }
 }
