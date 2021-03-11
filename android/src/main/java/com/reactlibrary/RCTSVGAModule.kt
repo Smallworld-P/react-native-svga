@@ -19,6 +19,11 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
         return "RCTSvgaMoudle"
     }
 
+    private fun isCachedForKT(url: String): Boolean {
+        val cacheKey = SVGACache.buildCacheKey(url)
+        return isCached(cacheKey)
+    }
+
     /**
      * 是否已下载
      */
@@ -44,35 +49,37 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
             Thread(Runnable {
                 for (i in list) {
                     index++
-                    while (pause) {
-                        synchronized(lock) {
-                            lock.wait()
-                        }
-                    }
-                    println("缓存中 - 当前第 $index 个, 共 ${urls.size()} 个, 地址 : $i")
-                    pause = true
-                    svgaParser.decodeFromURL(URL(i.toString()), object : SVGAParser.ParseCompletion {
-                        override fun onComplete(videoItem: SVGAVideoEntity) {
-                            println("第 $index 个 $i 缓存成功")
-                            pause = false
-                            synchronized (lock) {
-                                lock.notifyAll();
+                    if (!isCachedForKT(i.toString())) {
+                        while (pause) {
+                            synchronized(lock) {
+                                lock.wait()
                             }
                         }
+                        println("缓存中 - 当前第 $index 个, 共 ${urls.size()} 个, 地址 : $i")
+                        pause = true
+                        svgaParser.decodeFromURL(URL(i.toString()), object : SVGAParser.ParseCompletion {
+                            override fun onComplete(videoItem: SVGAVideoEntity) {
+                                println("第 $index 个 $i 缓存成功")
+                                pause = false
+                                synchronized (lock) {
+                                    lock.notifyAll();
+                                }
+                            }
 
-                        override fun onError() {
-                            println("第 $index 个 $i 缓存失败,请检查地址是否正确")
-                            pause = false
-                            synchronized (lock) {
-                                lock.notifyAll();
+                            override fun onError() {
+                                println("第 $index 个 $i 缓存失败,请检查地址是否正确")
+                                pause = false
+                                synchronized (lock) {
+                                    lock.notifyAll();
+                                }
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        println("第 $index 个, 地址 : $i 已缓存")
+                    }
                 }
             }).start()
-
         }
-
     }
 
     init {
