@@ -6,12 +6,17 @@ import {
     NativeModules,
     Platform
 } from 'react-native';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 
 const NativeSVGAView = requireNativeComponent('RNSVGA', SVGAView)
 
 const _Module = NativeModules.SvgaMoudle || NativeModules.RNSVGAManager
 
 export class SVGAModule {
+    static getAssets(nodeRequire) {
+        return resolveAssetSource(nodeRequire).uri
+    }
+
     static isCached(url) {
         if (Platform.OS == 'android') {
             return _Module.isCached(url)
