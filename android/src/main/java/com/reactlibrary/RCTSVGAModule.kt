@@ -40,7 +40,6 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun advanceDownload(urls: ReadableArray?) {
         if (urls != null && urls.size() > 0) {
-            var index = 0
             var pause = false
             val lock = java.lang.Object()
             val svgaParser = shareParser()
@@ -48,18 +47,17 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
             Thread(Runnable {
                 for (i in list) {
-                    index++
                     if (!isCachedForKT(i.toString())) {
                         while (pause) {
                             synchronized(lock) {
                                 lock.wait()
                             }
                         }
-                        println("缓存中 - 当前第 $index 个, 共 ${urls.size()} 个, 地址 : $i")
+                        println("缓存中 - 当前第 ${list.indexOf(i)} 个, 共 ${urls.size()} 个, 地址 : $i")
                         pause = true
                         svgaParser.decodeFromURL(URL(i.toString()), object : SVGAParser.ParseCompletion {
                             override fun onComplete(videoItem: SVGAVideoEntity) {
-                                println("第 $index 个 $i 缓存成功")
+                                println("第 ${list.indexOf(i)} 个 $i 缓存成功")
                                 pause = false
                                 synchronized (lock) {
                                     lock.notifyAll();
@@ -67,7 +65,7 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
                             }
 
                             override fun onError() {
-                                println("第 $index 个 $i 缓存失败,请检查地址是否正确")
+                                println("第 ${list.indexOf(i)} 个 $i 缓存失败,请检查地址是否正确")
                                 pause = false
                                 synchronized (lock) {
                                     lock.notifyAll();
@@ -75,7 +73,7 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
                             }
                         })
                     } else {
-                        println("第 $index 个, 地址 : $i 已缓存")
+                        println("第 ${list.indexOf(i)} 个, 地址 : $i 已缓存")
                     }
                 }
             }).start()
