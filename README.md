@@ -10,8 +10,20 @@
 
 ## Usage
 ```javascript
-import Svga from 'react-native-svga';
+import { ISvgaProps, SVGAView } from 'react-native-svga'
 
-// TODO: What to do with the module?
-Svga;
+
+export function showSVGA(props: ISvgaProps) {
+  let svgaTag: SVGAView
+     return <View style={{ width: kScreenW, height: 500, backgroundColor: 'black', marginTop: 100 }}>
+        <SVGAView
+          ref={(ref) => svgaTag = ref}
+          style={{ width: 300, height: 400 }}
+          onFinished={() => {
+            console.log("播放完毕");
+          }}
+          {...props}
+        />
+      </View>
+}
 ```
