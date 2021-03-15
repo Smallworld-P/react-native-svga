@@ -1,13 +1,14 @@
 {
   "name": "react-native-svga",
   "title": "React Native Svga",
-  "version": "1.0.1",
-  "description": "TODO",
+  "version": "1.0.2",
+  "description": "react-native 中使用 SVGA",
   "main": "index.js",
   "files": [
     "README.md",
     "android",
     "index.js",
+    "index.d.ts",
     "ios",
     "react-native-svga.podspec"
   ],
