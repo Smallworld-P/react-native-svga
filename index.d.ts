@@ -10,7 +10,7 @@ declare module 'react-native-svga' {
         // 动画播放至某进度时，回调
         onPercentage?: (value: number) => void
         // SVGA 动画文件的路径，可以是 URL，或是本地 NSBundle.mainBundle / assets 文件
-        source: string
+        source?: string
         // 默认值为 0，用于指定动画循环次数，0 = 无限循环
         loops?: number
         // 默认值为 true，动画播放完成后，是否清空画布
