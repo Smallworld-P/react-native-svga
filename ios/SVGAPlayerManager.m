@@ -17,7 +17,7 @@
 @property(nonatomic, copy) NSString *source;
 @property(nonatomic, copy) NSString *currentState;
 @property(nonatomic, assign) NSInteger toFrame;
-@property(nonatomic, assign) NSInteger toPercentage;
+@property(nonatomic, assign) CGFloat toPercentage;
 @property(nonatomic, copy) RCTBubblingEventBlock onFinished;
 @property(nonatomic, copy) RCTBubblingEventBlock onFrame;
 @property(nonatomic, copy) RCTBubblingEventBlock onPercentage;
@@ -34,7 +34,7 @@ static int kReactOnPercentageIdentifier;
 
 - (void)loadWithSource:(NSString *)source {
     SVGAParser *parser = [[SVGAParser alloc] init];
-    if ([source hasPrefix:@"http"] || [source hasPrefix:@"https"]) {
+    if ([source hasPrefix:@"http://"] || [source hasPrefix:@"https://"]) {
         [parser parseWithURL:[NSURL URLWithString:source]
              completionBlock:^(SVGAVideoEntity *_Nullable videoItem) {
                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -131,15 +131,15 @@ static int kReactOnPercentageIdentifier;
 
 /// 设置动画进度
 /// @param toPercentage 进度值
-- (void)setToPercentage:(NSInteger)toPercentage {
-    if (toPercentage < 0) {
+- (void)setToPercentage:(CGFloat)toPercentage {
+    if (toPercentage < 0.0) {
         return;
     }
     [self stepToPercentage:toPercentage andPlay:[self.currentState isEqualToString:@"play"]];
 }
 
 /// 设置动画进度初始值
-- (NSInteger)toPercentage {
+- (CGFloat)toPercentage {
     return 0.0;
 }
 
@@ -197,7 +197,7 @@ RCT_EXPORT_VIEW_PROPERTY(currentState, NSString)
 /// 控制当前动画停靠在某帧，如果 currentState 值为 ‘play’，则跳到该帧后继续播放动画
 RCT_EXPORT_VIEW_PROPERTY(toFrame, NSInteger)
 /// 控制当前动画停靠在某进度，如果 currentState 值为 ‘play’，则跳到该帧后继续播放动画
-RCT_EXPORT_VIEW_PROPERTY(toPercentage, NSInteger)
+RCT_EXPORT_VIEW_PROPERTY(toPercentage, CGFloat)
 /// 动画播放完成后，回调
 RCT_EXPORT_VIEW_PROPERTY(onFinished, RCTBubblingEventBlock)
 /// 动画播放至某帧时，回调
@@ -210,12 +210,14 @@ RCT_EXPORT_METHOD(advanceDownload:(NSArray *)cacheUrls) {
     if (cacheUrls.count <= 0) {
         return;
     }
-    cacheQueue = [NSOperationQueue new];
-    cacheQueue.maxConcurrentOperationCount = 1;
+    if (cacheQueue == nil) {
+        cacheQueue = [NSOperationQueue new];
+        cacheQueue.maxConcurrentOperationCount = 2;
+    }
     [cacheQueue addOperationWithBlock:^{
         for (NSString *source in cacheUrls) {
             SVGAParser *parser = [[SVGAParser alloc] init];
-            if ([source hasPrefix:@"http"] || [source hasPrefix:@"https"]) {
+            if ([source hasPrefix:@"http://"] || [source hasPrefix:@"https://"]) {
                 [parser parseWithURL:[NSURL URLWithString:source]
                      completionBlock:^(SVGAVideoEntity *_Nullable videoItem) {
                         NSLog(@"预加载完成");
