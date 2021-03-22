@@ -3,6 +3,7 @@
 ## Getting started
 
 `$ npm install react-native-svga --save`
+
 `$yarn add react-native-svga`
 
 ###或者
