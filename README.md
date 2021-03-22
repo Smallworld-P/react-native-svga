@@ -3,12 +3,13 @@
 ## Getting started
 
 `$ npm install react-native-svga --save`
-`yarn add react-native-svga
-或者
-npm install react-native-svga --save
+`$yarn add react-native-svga`
 
-然后
-npx pod-install 或者 npx jetify`
+###或者
+`$npm install react-native-svga --save`
+
+###然后
+`npx pod-install 或者 npx jetify`
 
 ### Mostly automatic installation
 
