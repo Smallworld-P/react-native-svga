@@ -6,10 +6,12 @@
 
 `$yarn add react-native-svga`
 
-###或者
+### 或者
+
 `$npm install react-native-svga --save`
 
-###然后
+### 然后
+
 `npx pod-install 或者 npx jetify`
 
 ### Mostly automatic installation
