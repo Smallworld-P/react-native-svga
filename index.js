@@ -14,9 +14,9 @@ const _Module = NativeModules.SvgaMoudle || NativeModules.RNSVGAManager
 export class SVGAModule {
 
     // 动态获取本地资源
-    static getAssets(nodeRequire) {
-        return resolveAssetSource(nodeRequire).uri
-    }
+    // static getAssets(nodeRequire) {
+    //     return resolveAssetSource(nodeRequire).uri
+    // }
 
     // 判断是否有缓存
     static isCached(url) {

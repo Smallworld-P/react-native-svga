@@ -51,7 +51,7 @@ declare module 'react-native-svga' {
     }
     export class SVGAModule {
         // 获取本地地址
-        static getAssets(url: NodeRequire): string
+        // static getAssets(url: NodeRequire): string
         // android only
         static isCached(url: String): Promise<Boolean>
         // android only
