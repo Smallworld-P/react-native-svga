@@ -44,18 +44,18 @@ static int kReactOnPercentageIdentifier;
              }
                 failureBlock:nil];
     } else {
-        NSString *localPath = [[NSBundle mainBundle] pathForResource:source ofType:@"svga"];
-        if (localPath != nil) {
-            [parser parseWithData:[NSData dataWithContentsOfFile:localPath]
-                         cacheKey:source
-                  completionBlock:^(SVGAVideoEntity *_Nonnull videoItem) {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                      [self setVideoItem:videoItem];
-                      [self startAnimation];
-                    }];
-                  }
-                     failureBlock:nil];
+        if ([source hasPrefix:@"file:///"]) {
+            source = [source substringFromIndex:7];
         }
+        [parser parseWithData:[NSData dataWithContentsOfFile:source]
+                     cacheKey:source
+              completionBlock:^(SVGAVideoEntity *_Nonnull videoItem) {
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                  [self setVideoItem:videoItem];
+                  [self startAnimation];
+                }];
+              }
+                 failureBlock:nil];
     }
 }
 
