@@ -3,16 +3,19 @@ package com.reactlibrary
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.opensource.svgaplayer.SVGACache
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import java.net.URL
 
 class RCTSVGAManager : SimpleViewManager<RCTSVGAImageView>() {
+    lateinit var context: ThemedReactContext
     override fun getName(): String {
         return REACT_CLASS
     }
 
     public override fun createViewInstance(c: ThemedReactContext): RCTSVGAImageView {
+        context = c
         return RCTSVGAImageView(c, null, 0)
     }
 
@@ -28,13 +31,16 @@ class RCTSVGAManager : SimpleViewManager<RCTSVGAImageView>() {
                 override fun onError() {}
             })
         } else {
-            svgaParser.decodeFromAssets(source, object : SVGAParser.ParseCompletion {
+            val id = context.resources.getIdentifier(source, "raw", context.packageName)
+            val inputStream = context.resources.openRawResource(id)
+            val cacheKay = SVGACache.buildCacheKey(source)
+            svgaParser.decodeFromInputStream(inputStream, cacheKay, object : SVGAParser.ParseCompletion {
                 override fun onComplete(videoItem: SVGAVideoEntity) {
                     view.setVideoItem(videoItem)
                     view.startAnimation()
                 }
                 override fun onError() {}
-            })
+            }, true)
         }
     }
 
