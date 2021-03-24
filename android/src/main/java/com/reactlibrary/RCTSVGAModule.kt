@@ -40,42 +40,28 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun advanceDownload(urls: ReadableArray?) {
         if (urls != null && urls.size() > 0) {
-            var pause = false
-            val lock = java.lang.Object()
             val svgaParser = shareParser()
             val list = urls.toArrayList()
 
-            Thread(Runnable {
-                for (i in list) {
-                    if (!isCachedForKT(i.toString())) {
-                        while (pause) {
-                            synchronized(lock) {
-                                lock.wait()
-                            }
-                        }
-                        println("缓存中 - 当前第 ${list.indexOf(i)} 个, 共 ${urls.size()} 个, 地址 : $i")
-                        pause = true
-                        svgaParser.decodeFromURL(URL(i.toString()), object : SVGAParser.ParseCompletion {
+            fun downloadUrl(index: Int) {
+                if (index < list.size) {
+                    println("正在缓存 $index ${list.lastIndex} ${list[index]}")
+                    svgaParser.decodeFromURL(URL(list[index].toString()), object : SVGAParser.ParseCompletion {
                             override fun onComplete(videoItem: SVGAVideoEntity) {
-                                println("第 ${list.indexOf(i)} 个 $i 缓存成功")
-                                pause = false
-                                synchronized (lock) {
-                                    lock.notifyAll();
-                                }
+                                println("第 $index 个 ${list[index]} 缓存成功")
+                                downloadUrl(index + 1)
                             }
 
                             override fun onError() {
-                                println("第 ${list.indexOf(i)} 个 $i 缓存失败,请检查地址是否正确")
-                                pause = false
-                                synchronized (lock) {
-                                    lock.notifyAll();
-                                }
+                                println("第 $index 个 ${list[index]} 缓存失败,请检查地址是否正确")
+                                downloadUrl(index + 1)
                             }
                         })
-                    } else {
-                        println("第 ${list.indexOf(i)} 个, 地址 : $i 已缓存")
-                    }
                 }
+            }
+
+            Thread(Runnable {
+                downloadUrl(0)
             }).start()
         }
     }
