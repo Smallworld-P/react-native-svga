@@ -12,8 +12,8 @@ SVGA 是一种同时兼容 iOS / Android / Flutter / Web 多个平台的动画�
 `yarn add react-native-svga`
 
 ### 1. 运行
-- android `npx pod-install` 
-- ios `npx jetify`
+- ios `npx pod-install` 
+- android `npx jetify`
 
 
 ### 2. Android 配置
