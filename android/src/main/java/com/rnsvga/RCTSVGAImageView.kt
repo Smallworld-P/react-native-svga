@@ -1,4 +1,4 @@
-package com.reactlibrary
+package com.rnsvga
 
 import android.content.Context
 import android.util.AttributeSet

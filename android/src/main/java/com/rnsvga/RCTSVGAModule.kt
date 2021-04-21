@@ -1,7 +1,6 @@
-package com.reactlibrary
+package com.rnsvga
 
 import android.net.http.HttpResponseCache
-import android.util.Log
 import com.facebook.react.bridge.*
 import com.opensource.svgaplayer.SVGACache
 import com.opensource.svgaplayer.SVGACache.isCached
@@ -40,29 +39,25 @@ class RCTSVGAModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun advanceDownload(urls: ReadableArray?) {
         if (urls != null && urls.size() > 0) {
+            onCreate(reactContext, SVGACache.Type.FILE)
             val svgaParser = shareParser()
             val list = urls.toArrayList()
 
-            fun downloadUrl(index: Int) {
-                if (index < list.size) {
-                    println("正在缓存 $index ${list.lastIndex} ${list[index]}")
-                    svgaParser.decodeFromURL(URL(list[index].toString()), object : SVGAParser.ParseCompletion {
-                            override fun onComplete(videoItem: SVGAVideoEntity) {
-                                println("第 $index 个 ${list[index]} 缓存成功")
-                                downloadUrl(index + 1)
-                            }
+            for (url in list) {
+                if (url.toString().startsWith("http")) {
+                    svgaParser.decodeFromURL(URL(url.toString()), object : SVGAParser.ParseCompletion {
+                        override fun onComplete(videoItem: SVGAVideoEntity) {
+                            println("$url 缓存成功")
+                        }
 
-                            override fun onError() {
-                                println("第 $index 个 ${list[index]} 缓存失败,请检查地址是否正确")
-                                downloadUrl(index + 1)
-                            }
-                        })
+                        override fun onError() {
+                            println("$url 缓存失败,请检查地址是否正确")
+                        }
+                    })
+                } else {
+                    println("$url 不是网络地址,不缓存")
                 }
             }
-
-            Thread(Runnable {
-                downloadUrl(0)
-            }).start()
         }
     }
 
