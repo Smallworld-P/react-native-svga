@@ -17,19 +17,6 @@ SVGA 是一种同时兼容 iOS / Android / Flutter / Web 多个平台的动画�
 然后
 `npx pod-install` 或者 `npx jetify`
 
-### Android 配置
-- AndroidManifest.xml    <application>标签里配置 `tools:replace="android:allowBackup"`
-- 因为这个插件使用kotlin写的，如果没有kotlin环境的话，需要安装下  `app/build.gradle` 中配置
-```
-    ext {
-        ...
-        kotlin_version = "1.4.0"
-    }
-    dependencies {
-        ...
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-      } 
-```
 
 ### Android 配置
 - AndroidManifest.xml    <application>标签里配置 `tools:replace="android:allowBackup"`
