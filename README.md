@@ -2,23 +2,21 @@
 
 SVGA 是一种同时兼容 iOS / Android / Flutter / Web 多个平台的动画格式。
 
-这是根据原生svga封装的RN插件，说来也简单，无论是安卓的SVGAPlayer-Android还是ios的SVGAPlayer-ios都已经做了React的封装，我们只是稍加改动组合到一起罢了
+这是根据原生svga封装的RN插件
 ## 特点
 1. 新增预加载
 2. 可以把svga资源放js里，而不必放原生项目中
 
-话不多说，进入正题
 
 ## 安装
 `yarn add react-native-svga`
-或者
-`npm install react-native-svga --save`
 
-然后
-`npx pod-install` 或者 `npx jetify`
+### 1. 运行
+- android `npx pod-install` 
+- ios `npx jetify`
 
 
-### Android 配置
+### 2. Android 配置
 - AndroidManifest.xml    <application>标签里配置 `tools:replace="android:allowBackup"`
   否则会报错
 ```
@@ -43,10 +41,10 @@ Execution failed for task ':app:processDebugMainManifest'.
 
 ```
 
-### iOS 配置
+### 3. iOS 配置
 无
 
-## JS项目配置(如果不把svga文件放js中可以跳过)
+### 4. JS项目配置(如果不把svga文件放js中可以跳过)
 `metro.config.js` , 否则会报引用不到资源
 ```
 module.exports = (async () => {
