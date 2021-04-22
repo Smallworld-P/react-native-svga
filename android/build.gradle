@@ -1,14 +1,20 @@
 // android/build.gradle
 
-// based on:
-//
-// * https://github.com/facebook/react-native/blob/0.60-stable/template/android/build.gradle
-//   original location:
-//   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/build.gradle
-//
-// * https://github.com/facebook/react-native/blob/0.60-stable/template/android/app/build.gradle
-//   original location:
-//   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/app/build.gradle
+buildscript {
+    // Buildscript is evaluated before everything else so we can't use getExtOrDefault
+    def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['Svga_kotlinVersion']
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        // noinspection DifferentKotlinGradleVersion
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 
 def DEFAULT_COMPILE_SDK_VERSION = 28
 def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
@@ -72,6 +78,12 @@ repositories {
     maven { url 'https://jitpack.io' }
 
 }
+
+def getExtOrDefault(name) {
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['Svga_' + name]
+}
+
+def kotlin_version = getExtOrDefault('kotlinVersion')
 
 dependencies {
     //noinspection GradleDynamicVersion
