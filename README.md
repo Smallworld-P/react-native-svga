@@ -26,21 +26,6 @@ Execution failed for task ':app:processDebugMainManifest'.
   	is also present at [com.github.yyued:SVGAPlayer-Android:2.5.15] AndroidManifest.xml:12:9-35 value=(true).
   	Suggestion: add 'tools:replace="android:allowBackup"' to <application> element at AndroidManifest.xml:7:5-12:19 to override.
 ```
-
-- 因为这个插件使用kotlin写的，如果没有kotlin环境的话，需要安装下  `android/build.gradle` 中配置
-
-```
-    ext {
-        ...
-        kotlin_version = "1.4.0"
-    }
-    dependencies {
-        ...
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-      } 
-
-```
-
 ### 3. iOS 配置
 无
 
