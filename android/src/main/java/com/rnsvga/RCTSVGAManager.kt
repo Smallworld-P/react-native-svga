@@ -32,15 +32,17 @@ class RCTSVGAManager : SimpleViewManager<RCTSVGAImageView>() {
             })
         } else {
             val id = context.resources.getIdentifier(source, "raw", context.packageName)
-            val inputStream = context.resources.openRawResource(id)
-            val cacheKay = SVGACache.buildCacheKey(source)
-            svgaParser.decodeFromInputStream(inputStream, cacheKay, object : SVGAParser.ParseCompletion {
-                override fun onComplete(videoItem: SVGAVideoEntity) {
-                    view.setVideoItem(videoItem)
-                    view.startAnimation()
-                }
-                override fun onError() {}
-            }, true)
+            if (id > 0) {
+                val inputStream = context.resources.openRawResource(id)
+                val cacheKay = SVGACache.buildCacheKey(source)
+                svgaParser.decodeFromInputStream(inputStream, cacheKay, object : SVGAParser.ParseCompletion {
+                    override fun onComplete(videoItem: SVGAVideoEntity) {
+                        view.setVideoItem(videoItem)
+                        view.startAnimation()
+                    }
+                    override fun onError() {}
+                }, true)
+            }
         }
     }
 
