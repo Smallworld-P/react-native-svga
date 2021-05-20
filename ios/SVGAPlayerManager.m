@@ -47,6 +47,11 @@ static int kReactOnPercentageIdentifier;
         if ([source hasPrefix:@"file:///"]) {
             source = [source substringFromIndex:7];
         }
+        if (![[NSFileManager defaultManager] fileExistsAtPath:source]) {
+            NSString *string = @"assets";
+            NSArray *sourceArr = [source componentsSeparatedByString:string];
+            source = [NSString stringWithFormat:@"%@/%@/%@", [NSBundle mainBundle].resourcePath,@"assets",sourceArr.lastObject];
+        }
         [parser parseWithData:[NSData dataWithContentsOfFile:source]
                      cacheKey:source
               completionBlock:^(SVGAVideoEntity *_Nonnull videoItem) {
