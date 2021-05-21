@@ -247,7 +247,7 @@ RCT_EXPORT_METHOD(advanceDownload:(NSArray *)cacheUrls) {
 - (UIView *)view {
     SVGAPlayer *aPlayer = [[SVGAPlayer alloc] init];
     aPlayer.delegate = aPlayer;
-    aPlayer.contentMode = UIViewContentModeScaleAspectFit;
+    aPlayer.contentMode = UIViewContentModeScaleAspectFill;
     return aPlayer;
 }
 
